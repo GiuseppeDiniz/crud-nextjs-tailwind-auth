@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Login',
+  title: 'Dashboard',
   description: 'p',
 }
 
@@ -9,7 +9,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html className="h-full bg-white" lang="pt-br">
+    <html className="h-full bg-gray-100" lang="pt-br">
       <body className="h-full">{children}</body>
     </html>
   )
