@@ -1,4 +1,47 @@
+/* eslint-disable @next/next/no-img-element */
+'use client'
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+type T = /*unresolved*/ any
+const getPosts = async (login: string, password: string) => {
+  try {
+    const response = await fetch('https://api-nodejs-mongoose.vercel.app/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        login,
+        password
+      })
+    });
+
+    const post = await response.json();
+    console.log(post);
+
+    return post;
+  } catch (error) {
+    console.error('Erro:', error);
+    throw error;
+  }
+};
+
 export default function Example() {
+  const router = useRouter();
+  const [values, setValues] = useState({
+    login: 'userAdmin',
+    password: 'admin'
+  }); 
+
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+    const posts = await getPosts(values.login, values.password);
+    router.push('/dashboard');
+  };
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -14,18 +57,18 @@ export default function Example() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Email address
+                Login
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
+                  id="login"
+                  name="login"
+                  type="text"
+                  autoComplete="login"
+                  //required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -48,7 +91,7 @@ export default function Example() {
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  required
+                  //required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
